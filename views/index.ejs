@@ -65,6 +65,14 @@
           z-index: 100;
 				}
 
+        form label:hover {
+          cursor: pointer;
+        }
+
+        form input {
+           pointer-events: none;
+        }
+
 				.color-box {
 				 width: 10px;
 				 height: 10px;
@@ -92,27 +100,27 @@
    <body cz-shortcut-listen="true">
 		  <div class="filters">
 				<form>
-					<label onclick="filterMap('#5da90f')">
-						<input type="checkbox" name="type" value="#5da90f">
-						Station ouverte
+					<label class="filter-label" data-value="#5da90f">
+						<input class="filter-input" type="checkbox" name="type" value="#5da90f">
+						 Station ouverte
 						<div class="color-box green"></div>
 					</label>
 
-					<label onclick="filterMap('#496ac9')">
-						<input type="checkbox" name="type" value="#496ac9">
-						Futures stations GNV
+					<label class="filter-label" data-value="#496ac9">
+						<input class="filter-input" type="checkbox" name="type" value="#496ac9">
+						 Futures stations GNV
 						<div class="color-box blue"></div>
 					</label>
 
-					<label onclick="filterMap('#8e29c4')">
-						<input type="checkbox" name="type" value="#8e29c4">
-						Stations à l'étude
+					<label class="filter-label" data-value="#8e29c4">
+						<input class="filter-input" type="checkbox" name="type" value="#8e29c4">
+						 Stations à l'étude
 						<div class="color-box orange"></div>
 					</label>
 
-					<label onclick="filterMap('#db5810')">
-						<input type="checkbox" name="type" value="#db5810">
-						Travaux programmés ou en cours
+					<label class="filter-label" data-value="#db5810">
+						<input class="filter-input" type="checkbox" name="type" value="#db5810">
+						 Travaux programmés ou en cours
 						<div class="color-box purple"></div>
 					</label>
 				</form>
@@ -123,10 +131,20 @@
 
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
       <script type="text/javascript">
+        var filterLabels = document.getElementsByClassName("filter-label");
+        for (var i = 0; i < filterLabels.length; i++) {
+            filterLabels[i].addEventListener('click', filterMap, false);
+        }
+
 				 var markers = new Array();
 				 var filters = new Array();
 
-				 function filterMap(value) {
+				 function filterMap(event) {
+           event.preventDefault();
+           const value = this.getAttribute("data-value");
+           const input = this.querySelector(".filter-input");
+           input.checked = !input.checked;
+
 					 toggleFilters(value);
 					 resetFilters(markers);
 
@@ -891,8 +909,6 @@
          		});
 
          	})();
-
-					console.log(markers);
          }
       </script>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9t7r5MTrXgbikEksL3e6X0Yy5q2T-QxU&amp;v=3.31&amp;language=fr&amp;libraries=places,geometry&amp;callback=createMap"></script>
