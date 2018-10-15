@@ -50,19 +50,26 @@
       </style>
 
 			<style type="text/css">
-				form {
-					background-color: #ececec;
-					padding: 25px;
-					margin: 0;
-					font-family: Arial,Helvetica,sans-serif;
-					font-size: 14px;
-					color: gray;
+        .clear {
+          clear: both;
+        }
+
+        .filters {
           position: absolute;
           width: 100%;
           top: 0;
           left: 0;
           right: 0;
           z-index: 100;
+        }
+
+				form {
+					background-color: #ececec;
+					padding: 25px 25px 5px 25px;
+					margin: 0;
+					font-family: Arial,Helvetica,sans-serif;
+					font-size: 14px;
+					color: gray;
 				}
 
         form label:hover {
@@ -71,6 +78,14 @@
 
         form input {
            pointer-events: none;
+        }
+
+        .filter-label {
+          padding-right: 15px;
+          padding-bottom: 20px;
+          height: 20px;
+          display: inline-block;
+          float: left;
         }
 
 				.color-box {
@@ -99,12 +114,18 @@
    </head>
    <body cz-shortcut-listen="true">
 		  <div class="filters">
-				<form>
+				<form id="form">
 					<label class="filter-label" data-value="#5da90f">
 						<input class="filter-input" type="checkbox" name="type" value="#5da90f">
-						 Station ouverte
+						 Stations ouvertes
 						<div class="color-box green"></div>
 					</label>
+
+          <label class="filter-label" data-value="#db5810">
+            <input class="filter-input" type="checkbox" name="type" value="#db5810">
+             Travaux programmés ou en cours
+            <div class="color-box purple"></div>
+          </label>
 
 					<label class="filter-label" data-value="#496ac9">
 						<input class="filter-input" type="checkbox" name="type" value="#496ac9">
@@ -117,12 +138,7 @@
 						 Stations à l'étude
 						<div class="color-box orange"></div>
 					</label>
-
-					<label class="filter-label" data-value="#db5810">
-						<input class="filter-input" type="checkbox" name="type" value="#db5810">
-						 Travaux programmés ou en cours
-						<div class="color-box purple"></div>
-					</label>
+          <div class="clear"></div>
 				</form>
 			</div>
 
@@ -130,27 +146,32 @@
       </div>
 
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+
       <script type="text/javascript">
-        var filterLabels = document.getElementsByClassName("filter-label");
-        for (var i = 0; i < filterLabels.length; i++) {
-            filterLabels[i].addEventListener('click', filterMap, false);
-        }
+        const form = document.querySelector("#form");
+        const hammer = new Hammer(form);
+
+        hammer.on('tap', function(e) {
+          const value = e.target.getAttribute('data-value');
+
+          toggleFilters(value);
+          resetFilters(markers);
+
+          filterMap(value);
+        });
 
 				 var markers = new Array();
 				 var filters = new Array();
 
-				 function filterMap(event) {
-           event.preventDefault();
-           const value = this.getAttribute("data-value");
-           const input = this.querySelector(".filter-input");
-           input.checked = !input.checked;
-
-					 toggleFilters(value);
-					 resetFilters(markers);
+				 function filterMap(value) {
 
 					 if(filters.length) {
+             console.log(markers);
 						 _.forEach(markers, function(m) {
+               console.log(m.icon.fillColor);
 							 const isSelected = _.find(filters, function(f) { return m.icon.fillColor === f });
+               console.log(isSelected);
 							 if(!isSelected) {
 								 m.setVisible(false);
 							 }
@@ -189,7 +210,7 @@
          					zoom: 6,
          					styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#7dcdcd"}]}],
          					maxZoom: 20,
-         					minZoom: 0,
+         					minZoom: 6,
          					mapTypeId: 'roadmap',
          				};
 
@@ -251,7 +272,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -298,7 +319,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -345,7 +366,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -392,7 +413,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -439,7 +460,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -486,7 +507,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
          				})();
@@ -510,7 +531,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -557,7 +578,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -604,7 +625,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -651,7 +672,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -698,7 +719,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -745,7 +766,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -792,7 +813,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -839,7 +860,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -886,7 +907,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -933,7 +954,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -980,7 +1001,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1027,7 +1048,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1074,7 +1095,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1121,7 +1142,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1168,7 +1189,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1215,7 +1236,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1262,7 +1283,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1309,7 +1330,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1356,7 +1377,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1403,7 +1424,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1450,7 +1471,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1497,7 +1518,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1544,7 +1565,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1591,7 +1612,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1638,7 +1659,7 @@
          						strokeOpacity: 0
          					};
 
-         					var marker = new google.maps.Marker(markerOptions);
+         					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
 
@@ -1668,7 +1689,7 @@
 
 
          			}
-         		
+
       </script>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9t7r5MTrXgbikEksL3e6X0Yy5q2T-QxU&amp;v=3.31&amp;language=fr&amp;libraries=places,geometry&amp;callback=createMap"></script>
    </body>
