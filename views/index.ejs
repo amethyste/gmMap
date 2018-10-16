@@ -207,7 +207,7 @@
 					zoom: 6,
 					styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#7dcdcd"}]}],
 					maxZoom: 20,
-					minZoom: 4,
+					minZoom: 5.5,
 					mapTypeId: 'roadmap',
 				};
 
@@ -1901,28 +1901,28 @@
 				})();
 				
 				
-				(function(){
-					var markerOptions = {
-						map: map,
-						position: {
-							lat: 48.851768,
-							lng: 48.851768,
-						}
-					};
+				// (function(){
+				// 	var markerOptions = {
+				// 		map: map,
+				// 		position: {
+				// 			lat: 48.851768,
+				// 			lng: 48.851768,
+				// 		}
+				// 	};
 					
-					markerOptions.icon = {
-						path: 'M10 13.9c-2.8-0.5-5-2.9-5-5.9 0-3.3 2.7-6 6-6 3.3 0 6 2.7 6 6 0 3-2.2 5.4-5 5.9l0 8.1 -2 0 0-8.1',
-						scale: 0.8181818181818181818181818182,
-						anchor: new google.maps.Point(11, 22),
-						fillOpacity: 1,
-						fillColor: '#8e29c4',
-						strokeOpacity: 0
-					};
+				// 	markerOptions.icon = {
+				// 		path: 'M10 13.9c-2.8-0.5-5-2.9-5-5.9 0-3.3 2.7-6 6-6 3.3 0 6 2.7 6 6 0 3-2.2 5.4-5 5.9l0 8.1 -2 0 0-8.1',
+				// 		scale: 0.8181818181818181818181818182,
+				// 		anchor: new google.maps.Point(11, 22),
+				// 		fillOpacity: 1,
+				// 		fillColor: '#8e29c4',
+				// 		strokeOpacity: 0
+				// 	};
 					
-					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+				// 	var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
 
-				})();
+				// })();
 				
 				
 				(function(){
