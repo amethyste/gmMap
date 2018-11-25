@@ -5,6 +5,7 @@ var express        = require('express');
 var bodyParser     = require('body-parser');
 var app            = express();
 var port           = process.env.PORT || 8080;
+var path           = require('path');
 
 // use ejs and express layouts
 app.set('view engine', 'ejs');
@@ -17,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var router = require('./app/routes');
 app.use('/', router);
 
+//set scripts files
+app.use(express.static(path.join(__dirname, '/scripts')));
 
 // set static files (css and images, etc) location
 app.use(express.static(__dirname + '/public'));
