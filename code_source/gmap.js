@@ -53,107 +53,9 @@
 
 				setControlOptions('zoom',true,'DEFAULT','',null);
 
-			var findMarkers = function(place, radius) {
-				var markersFound = [];
 
-				for (var marker of markers) {
-					var targetLat = marker.getPosition().lat();
-					var targetLng = marker.getPosition().lng();
-					var centerLat = place.geometry.location.lat();
-					var centerLng = place.geometry.location.lng();
+				var map = new google.maps.Map(document.getElementById('map'), opts);
 
-					var targetLoc = new google.maps.LatLng(targetLat,targetLng);
-					var centerLoc = new google.maps.LatLng(centerLat, centerLng);
-
-					var distanceInkm = (google.maps.geometry.spherical.computeDistanceBetween(centerLoc, targetLoc) / 1000).toFixed(2);
-
-					if(distanceInkm <= radius){
-						markersFound.push(marker);
-					}
-				}
-
-				return markersFound;
-			}
-
-			var fillResults = function(place) {
-				var bounds = new google.maps.LatLngBounds();
-				var radiusList = [25, 50, 100];
-				var i = 0;
-
-				do {
-					searchMarkersByGmap = findMarkers(place, radiusList[i]);
-					i++;
-				} while(searchMarkersByGmap.length === 0 && i < radiusList.length)
-
-				combineFilters(searchMarkersByFilters, searchMarkersByGmap);
-
-				if (place.geometry.viewport) {
-					// Only geocodes have viewport.
-					bounds.union(place.geometry.viewport);
-				} else {
-					bounds.extend(place.geometry.location);
-				}
-
-				map.fitBounds(bounds);
-				map.setZoom(11);
-				map.panBy(-150, 0);
-			}
-
-			 map = new google.maps.Map(document.getElementById('map'), opts);
-			 map.panBy(-155, 0);
-
-			 var inputSearchbar = document.querySelector('#searchbar input');
-			 var options = {
-			    types: ['(cities)'],
-			    componentRestrictions: {country: 'fr'}
-			 };
-
-			 var autocomplete = new google.maps.places.Autocomplete(inputSearchbar, options);
-			 autocomplete.bindTo('bounds', map);
-
-			 google.maps.event.addDomListener(inputSearchbar, 'keydown', function(event) {
-			 	 if (event.keyCode === 13) {
-					 event.preventDefault();
-				 }
-			 });
-
-			 google.maps.event.addDomListener(inputSearchbar, 'focus', function(event) {
-				 inputSearchbar.value = "";
-				 searchMarkersByGmap = [];
-				 combineFilters(searchMarkersByFilters, searchMarkersByGmap);
-			 });
-
-			 google.maps.event.addListener(autocomplete, 'place_changed', function(event) {
-          var place = autocomplete.getPlace();
-					searchMarkersByGmap = [];
-
-          if (!place.formatted_address) {
-						autocompleteService = new google.maps.places.AutocompleteService();
-						autocompleteService.getPlacePredictions(
-								{
-										'input': place.name,
-										'offset': place.name.length,
-										'componentRestrictions': {'country': 'fr'},
-										'types': ['(cities)']
-								},
-								function listentoresult(list, status) {
-									var firstResult = list[0];
-									inputSearchbar.value = firstResult.description;
-
-									var request = {
-									  placeId: firstResult.place_id,
-									  fields: ['geometry']
-									};
-
-									var service = new google.maps.places.PlacesService(map);
-									service.getDetails(request, function(place, status){
-										fillResults(place);
-									});
-								});
-          } else {
-						fillResults(place);
-					}
-        });
 
 				(function(){
 					var markerOptions = {
@@ -161,8 +63,7 @@
 						position: {
 							lat: 47.2635,
 							lng: -1.5085,
-						},
-						title: "Nantes Est"
+						}
 					};
 
 					markerOptions.icon = {
@@ -175,6 +76,8 @@
 					};
 
 					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
 
 					var infoWindow = new SnazzyInfoWindow({
 						marker: marker,
@@ -196,7 +99,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -207,8 +110,7 @@
 						position: {
 							lat: 50.457201,
 							lng: 2.974727,
-						},
-						title: "Relais des Hautois"
+						}
 					};
 
 					markerOptions.icon = {
@@ -221,6 +123,8 @@
 					};
 
 					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
 
 					var infoWindow = new SnazzyInfoWindow({
 						marker: marker,
@@ -242,7 +146,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -253,8 +157,7 @@
 						position: {
 							lat: 45.662038,
 							lng: 5.106716,
-						},
-						title: "Saint Quentin Fallavier"
+						}
 					};
 
 					markerOptions.icon = {
@@ -290,7 +193,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -301,8 +204,7 @@
 						position: {
 							lat: 43.856761,
 							lng: -0.517139,
-						},
-						title: "Mont de Marsan"
+						}
 					};
 
 					markerOptions.icon = {
@@ -315,6 +217,8 @@
 					};
 
 					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
 
 					var infoWindow = new SnazzyInfoWindow({
 						marker: marker,
@@ -336,7 +240,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -347,8 +251,7 @@
 						position: {
 							lat: 47.6128,
 							lng: 1.332,
-						},
-						title: "Blois"
+						}
 					};
 
 					markerOptions.icon = {
@@ -384,7 +287,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -395,8 +298,7 @@
 						position: {
 							lat: 48.052241,
 							lng: 0.183495,
-						},
-						title: "Le Mans Nord / Saint Saturnin"
+						}
 					};
 
 					markerOptions.icon = {
@@ -432,7 +334,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -443,8 +345,7 @@
 						position: {
 							lat: 43.5931,
 							lng: 1.3065,
-						},
-						title: "Toulouse Colomiers"
+						}
 					};
 
 					markerOptions.icon = {
@@ -480,7 +381,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -491,8 +392,7 @@
 						position: {
 							lat: 47.158868,
 							lng: -1.55216,
-						},
-						title: "Nantes MIN"
+						}
 					};
 
 					markerOptions.icon = {
@@ -528,7 +428,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -539,8 +439,7 @@
 						position: {
 							lat: 44.9141,
 							lng: -0.4871,
-						},
-						title: "Bordeaux Carbon Blanc"
+						}
 					};
 
 					markerOptions.icon = {
@@ -576,7 +475,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -587,8 +486,7 @@
 						position: {
 							lat: 47.054148,
 							lng: 2.34291,
-						},
-						title: "Bourges Beaulieu"
+						}
 					};
 
 					markerOptions.icon = {
@@ -624,7 +522,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -635,8 +533,7 @@
 						position: {
 							lat: 48.0991,
 							lng: -1.6255,
-						},
-						title: "Rennes Chantepie"
+						}
 					};
 
 					markerOptions.icon = {
@@ -672,7 +569,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -683,8 +580,7 @@
 						position: {
 							lat: 48.75034216,
 							lng: 2.389211923,
-						},
-						title: "Relais Rungis Halles"
+						}
 					};
 
 					markerOptions.icon = {
@@ -720,7 +616,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -731,8 +627,7 @@
 						position: {
 							lat: 49.40414619,
 							lng: 1.110854543,
-						},
-						title: "Relais de l'Ile Gad"
+						}
 					};
 
 					markerOptions.icon = {
@@ -768,7 +663,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -779,8 +674,7 @@
 						position: {
 							lat: 48.52454564,
 							lng: 7.783637546,
-						},
-						title: "Relais du Rhin"
+						}
 					};
 
 					markerOptions.icon = {
@@ -816,7 +710,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -827,8 +721,7 @@
 						position: {
 							lat: 43.906137,
 							lng: 4.889899,
-						},
-						title: "Relais Montfavet La Durance"
+						}
 					};
 
 					markerOptions.icon = {
@@ -864,7 +757,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -875,8 +768,7 @@
 						position: {
 							lat: 49.868638,
 							lng: 2.378544,
-						},
-						title: "Amiens Est"
+						}
 					};
 
 					markerOptions.icon = {
@@ -912,7 +804,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -923,8 +815,7 @@
 						position: {
 							lat: 48.623777,
 							lng: 2.368935,
-						},
-						title: "Relais de Fleury"
+						}
 					};
 
 					markerOptions.icon = {
@@ -960,7 +851,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -971,8 +862,7 @@
 						position: {
 							lat: 49.487560473,
 							lng: 0.14961586421,
-						},
-						title: "Relais Amiral Mouchez"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1008,7 +898,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1019,8 +909,7 @@
 						position: {
 							lat: 48.961399461,
 							lng: 1.812400161,
-						},
-						title: "Relais de la Mauldre"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1056,7 +945,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1067,8 +956,7 @@
 						position: {
 							lat: 43.34999,
 							lng: 3.25,
-						},
-						title: "Relais de Mazeran"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1104,7 +992,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1115,8 +1003,7 @@
 						position: {
 							lat: 43.483683015,
 							lng: 5.383786261,
-						},
-						title: "Relais des Milles"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1152,7 +1039,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1163,8 +1050,7 @@
 						position: {
 							lat: 49.238837595,
 							lng: 4.0452894988,
-						},
-						title: "Relais du Rouillat"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1177,6 +1063,8 @@
 					};
 
 					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
 
 					var infoWindow = new SnazzyInfoWindow({
 						marker: marker,
@@ -1198,7 +1086,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1209,8 +1097,7 @@
 						position: {
 							lat: 48.943076,
 							lng: 2.273999,
-						},
-						title: "Port de Gennevilliers SIGEIF"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1246,7 +1133,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1257,8 +1144,7 @@
 						position: {
 							lat: 48.764688,
 							lng: 2.356465,
-						},
-						title: "Relais de Rungis (MIN Rungis)"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1294,7 +1180,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1305,8 +1191,7 @@
 						position: {
 							lat: 48.79250804,
 							lng: 2.618445004,
-						},
-						title: "Relais de Pontault Combault Est"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1342,7 +1227,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1353,8 +1238,7 @@
 						position: {
 							lat: 49.570995,
 							lng: 3.65434,
-						},
-						title: "Relais Champ du Roy"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1390,7 +1274,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1401,8 +1285,7 @@
 						position: {
 							lat: 49.12947861,
 							lng: 6.16511495,
-						},
-						title: "Relais de Port Mazerolle"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1438,7 +1321,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1449,8 +1332,7 @@
 						position: {
 							lat: 45.711964,
 							lng: 4.938697,
-						},
-						title: "Relais de Saint Priest Mi-Plaine"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1486,7 +1368,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1497,8 +1379,7 @@
 						position: {
 							lat: 45.30430051,
 							lng: 5.625731825,
-						},
-						title: "Relais des Balmes"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1534,7 +1415,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1545,8 +1426,7 @@
 						position: {
 							lat: 48.43568015,
 							lng: 1.521441755,
-						},
-						title: "Relais des Beaumonts"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1582,7 +1462,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1593,8 +1473,7 @@
 						position: {
 							lat: 47.047184,
 							lng: 3.13125,
-						},
-						title: "Nevers"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1630,7 +1509,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1641,8 +1520,7 @@
 						position: {
 							lat: 49.4314779,
 							lng: 2.117993754,
-						},
-						title: "Relais Espace St Germain"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1678,7 +1556,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1689,8 +1567,7 @@
 						position: {
 							lat: 44.78077508,
 							lng: -0.649526416,
-						},
-						title: "Relais Haut L'Eveque"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1726,7 +1603,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1737,8 +1614,7 @@
 						position: {
 							lat: 48.6030999,
 							lng: 2.247660167,
-						},
-						title: "Relais St Germain Arpajon"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1774,7 +1650,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1785,8 +1661,7 @@
 						position: {
 							lat: 45.70691603,
 							lng: 4.987151648,
-						},
-						title: "Relais St Hubert"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1822,7 +1697,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1833,8 +1708,7 @@
 						position: {
 							lat: 47.451436,
 							lng: 0.726795,
-						},
-						title: "Tours nord"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1870,7 +1744,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1881,8 +1755,7 @@
 						position: {
 							lat: 45.995901,
 							lng: 4.740718,
-						},
-						title: "Villefranche sur Saone"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1918,7 +1791,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1929,8 +1802,7 @@
 						position: {
 							lat: 47.28299828,
 							lng: 5.009852063,
-						},
-						title: "Relais Chenove Est"
+						}
 					};
 
 					markerOptions.icon = {
@@ -1966,7 +1838,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1977,8 +1849,7 @@
 						position: {
 							lat: 48.632646,
 							lng: 0.187981,
-						},
-						title: "Alençon / Pays de Sees"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2014,7 +1885,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2025,8 +1896,7 @@
 						position: {
 							lat: 47.8641,
 							lng: 3.5388,
-						},
-						title: "Auxerre"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2062,7 +1932,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2073,8 +1943,7 @@
 						position: {
 							lat: 49.037203,
 							lng: 4.32241,
-						},
-						title: "Chalons en Champagne"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2110,7 +1979,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2121,8 +1990,7 @@
 						position: {
 							lat: 49.7361,
 							lng: 4.7261,
-						},
-						title: "Charleville Mézières"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2158,7 +2026,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2169,8 +2037,7 @@
 						position: {
 							lat: 48.71308,
 							lng: 1.374599,
-						},
-						title: "Dreux Vernouillet"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2206,7 +2073,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2217,8 +2084,7 @@
 						position: {
 							lat: 48.221768,
 							lng: 6.430989,
-						},
-						title: "Epinal Chavelot"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2254,7 +2120,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2265,8 +2131,7 @@
 						position: {
 							lat: 48.7303,
 							lng: 3.5832,
-						},
-						title: "Esternay Nord"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2302,7 +2167,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2313,8 +2178,7 @@
 						position: {
 							lat: 46.3483,
 							lng: -0.31,
-						},
-						title: "Fougères / St-Sauveur-des-Landes"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2350,7 +2214,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2361,8 +2225,7 @@
 						position: {
 							lat: 46.2036,
 							lng: 1.3903,
-						},
-						title: "La Croisière"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2398,7 +2261,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2409,8 +2272,7 @@
 						position: {
 							lat: 44.5423,
 							lng: -0.2676,
-						},
-						title: "Langon"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2446,7 +2308,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2457,8 +2319,7 @@
 						position: {
 							lat: 47.796904,
 							lng: 5.226665,
-						},
-						title: "Langres Sud"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2494,7 +2355,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2505,8 +2366,7 @@
 						position: {
 							lat: 46.131832,
 							lng: 0.180627,
-						},
-						title: "Limalonges"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2542,7 +2402,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2553,8 +2413,7 @@
 						position: {
 							lat: 46.3483,
 							lng: -0.31,
-						},
-						title: "Niort La Crèche"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2590,7 +2449,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2601,8 +2460,7 @@
 						position: {
 							lat: 43.768394,
 							lng: 1.682961,
-						},
-						title: "Relais Porte du Tarn"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2638,7 +2496,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2649,8 +2507,7 @@
 						position: {
 							lat: 48.683997,
 							lng: 5.734734,
-						},
-						title: "Pagny sur Meuse"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2686,7 +2543,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2697,8 +2554,7 @@
 						position: {
 							lat: 47.97319938,
 							lng: 0.158393716,
-						},
-						title: "Relais Allonnes"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2734,7 +2590,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2745,8 +2601,7 @@
 						position: {
 							lat: 43.35357303,
 							lng: -0.379644317,
-						},
-						title: "Relais Aygue Longue"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2782,7 +2637,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2793,8 +2648,7 @@
 						position: {
 							lat: 43.322264,
 							lng: -0.367687,
-						},
-						title: "Relais Barincou"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2830,7 +2684,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2841,8 +2695,7 @@
 						position: {
 							lat: 43.64023779,
 							lng: 5.048816183,
-						},
-						title: "Relais de la Crau"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2878,7 +2731,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2889,8 +2742,7 @@
 						position: {
 							lat: 42.769255,
 							lng: 2.871292,
-						},
-						title: "Relais de Rivesaltes"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2926,7 +2778,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2937,8 +2789,7 @@
 						position: {
 							lat: 47.32874,
 							lng: -1.78273,
-						},
-						title: "Relais de Vigneux"
+						}
 					};
 
 					markerOptions.icon = {
@@ -2974,7 +2825,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2985,8 +2836,7 @@
 						position: {
 							lat: 50.3407422,
 							lng: 3.468190206,
-						},
-						title: "Relais de la Sentinelle Ouest"
+						}
 					};
 
 					markerOptions.icon = {
@@ -3022,7 +2872,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3033,8 +2883,7 @@
 						position: {
 							lat: 48.90008,
 							lng: 2.32928,
-						},
-						title: "Relais Porte de St Ouen"
+						}
 					};
 
 					markerOptions.icon = {
@@ -3070,7 +2919,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3081,8 +2930,7 @@
 						position: {
 							lat: 43.46550011,
 							lng: 5.606669689,
-						},
-						title: "SARL SBH"
+						}
 					};
 
 					markerOptions.icon = {
@@ -3118,7 +2966,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3129,8 +2977,7 @@
 						position: {
 							lat: 48.6976,
 							lng: 6.0536,
-						},
-						title: "Velaine en Haye"
+						}
 					};
 
 					markerOptions.icon = {
@@ -3166,7 +3013,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3177,8 +3024,7 @@
 						position: {
 							lat: 48.9836,
 							lng: 1.742,
-						},
-						title: "Port de Limay"
+						}
 					};
 
 					markerOptions.icon = {
@@ -3214,9 +3060,10 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
 
 			}
+		

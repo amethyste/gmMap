@@ -20,7 +20,7 @@
       </style>
       <style>
          #map {
-           height: 100%;
+         height: 100%;
          }
       </style>
       <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i|Open+Sans:400,400i,700,700i|Roboto:400,400i,700,700i" rel="stylesheet">
@@ -50,46 +50,17 @@
       </style>
 
 			<style type="text/css">
-        html {
-          overflow: hidden;
-        }
-
         .clear {
           clear: both;
         }
 
         .filters {
           position: absolute;
-          width: 250px;
+          width: 100%;
           top: 0;
           left: 0;
-          bottom: 0;
+          right: 0;
           z-index: 100;
-          height: 100%;
-          background-color: #ececec;
-          transform: translate(0, 0);
-          transition: transform 500ms;
-        }
-
-        .filters .icon-close {
-          display: block;
-        }
-
-        .filters .icon-filter {
-          display: none;
-        }
-
-        .filters.isClosed {
-          transform: translate(-100%, 0);
-          transition: transform 500ms;
-        }
-
-        .filters.isClosed .icon-close {
-          display: none;
-        }
-
-        .filters.isClosed .icon-filter {
-          display: block;
         }
 
 				form {
@@ -105,18 +76,8 @@
           cursor: pointer;
         }
 
-        form input[type=checkbox] {
+        form input {
            pointer-events: none;
-        }
-
-        [id="searchbar"] input {
-          width: 200px;
-          line-height: 45px;
-          height: 45px;
-          display: block;
-          background-color: whitesmoke;
-          border: 1px solid #ccc;
-          padding: 0 15px;
         }
 
         .filter-label {
@@ -125,30 +86,6 @@
           height: 20px;
           display: inline-block;
           float: left;
-          clear: both;
-        }
-
-        .filter-input {
-          float: left;
-          width: 20px;
-        }
-
-        .toggle-menu {
-          width: 20px;
-          height: 20px;
-          padding: 10px;
-          position: absolute;
-          left: 100%;
-          top: 0;
-          background-color: #ececec;
-        }
-
-        .toggle-menu [class^=icon-] {
-          position: absolute;
-          top: 10px;
-          left: 10px;
-          cursor: pointer;
-          width: 17px;
         }
 
 				.color-box {
@@ -165,43 +102,6 @@
 				.color-box.orange { background-color: #db5810; }
 				.color-box.purple { background-color: #8e29c4; }
 
-        .results-number {
-          font-size: 0.7rem;
-          font-weight: bolder;
-        }
-
-        [id="results"] {
-          height: -moz-calc(100% - 340px);
-          height: -webkit-calc(100% - 340px);
-          height: calc(100% - 340px);
-          overflow-y: scroll;
-          position: absolute;
-          left: 25px;
-          right: 25px;
-          bottom: 25px;
-        }
-
-        [id="results"] .result {
-          background: #f7f7f7;
-          padding: 15px;
-          margin: 0 0 10px 0;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-        }
-
-        [id="results"] .circle {
-          width: 10px;
-          height: 10px;
-          border-radius: 5px;
-          display: inline-block;
-          margin: 0 7px 0 5px;
-        }
-
-        [id="results"] .result-label {
-          margin: 0;
-        }
-
 				@media screen and (max-width: 640px) {
 				  form label {
 				    display: block;
@@ -214,44 +114,30 @@
    </head>
    <body cz-shortcut-listen="true">
 		  <div class="filters">
-        <div class="toggle-menu" onclick="toggleMenu()">
-          <img src="/svgs/close.svg" alt="close" class="icon-close">
-          <img src="/svgs/filter.svg" alt="filter" class="icon-filter">
-        </div>
-				<form>
-          <div id="searchbar">
-            <h4>Rechercher une station</h4>
-            <input type="search" name="search" placeholder="Ville ou code postal"/>
-          </div>
+				<form id="form">
+					<label class="filter-label" data-value="#5da90f">
+						<input class="filter-input" type="checkbox" name="type" value="#5da90f">
+						 Stations ouvertes
+						<div class="color-box green"></div>
+					</label>
 
-          <div id="form-filters">
-            <h4>Types de station</h4>
-            <div class="form-filters-content">
-    					<label class="filter-label" data-value="#5da90f">
-    						<input class="filter-input" type="checkbox" name="type" value="#5da90f">
-    						 Stations ouvertes
-    						<div class="color-box green"></div>
-    					</label>
+          <label class="filter-label" data-value="#db5810">
+            <input class="filter-input" type="checkbox" name="type" value="#db5810">
+             Travaux programmés ou en cours
+            <div class="color-box orange"></div>
+          </label>
 
-              <label class="filter-label" data-value="#db5810">
-                <input class="filter-input" type="checkbox" name="type" value="#db5810">
-                 Travaux programmés ou en cours
-                <div class="color-box orange"></div>
-              </label>
+					<label class="filter-label" data-value="#496ac9">
+						<input class="filter-input" type="checkbox" name="type" value="#496ac9">
+						 Futures stations GNC
+						<div class="color-box blue"></div>
+					</label>
 
-    					<label class="filter-label" data-value="#496ac9">
-    						<input class="filter-input" type="checkbox" name="type" value="#496ac9">
-    						 Stations équipables
-    						<div class="color-box blue"></div>
-    					</label>
-              <div class="clear"></div>
-            </div>
-          </div>
-
-          <div class="results-number"></div>
-          <div id="results">
-          </div>
-
+					<!-- <label class="filter-label" data-value="#8e29c4">
+						<input class="filter-input" type="checkbox" name="type" value="#8e29c4">
+						 Stations à l'étude
+						<div class="color-box purple"></div>
+					</label> -->
           <div class="clear"></div>
 				</form>
 			</div>
@@ -263,16 +149,10 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
 
       <script type="text/javascript">
-        var map;
+        const form = document.querySelector("#form");
+        const hammer = new Hammer(form);
 
-        /* ================================= */
-        /* ============ Filters ============ */
-        /* ================================= */
-        /* Gesture Behavior */
-        const formFilters = document.querySelector("#form-filters .form-filters-content");
-        const hammerFilters = new Hammer(formFilters);
-
-        hammerFilters.on('tap', function(e) {
+        hammer.on('tap', function(e) {
           const value = e.target.getAttribute('data-value');
 
           toggleFilters(value);
@@ -281,31 +161,19 @@
           filterMap(value);
         });
 
-         /* Sorting */
-         var markers = new Array();
-         var searchMarkers = new Array();
-         var searchMarkersByFilters = new Array();
-         var searchMarkersByGmap = new Array();
-         var infoWindows = new Array();
+				 var markers = new Array();
 				 var filters = new Array();
 
 				 function filterMap(value) {
-					 if(filters.length) {
-             searchMarkersByFilters = [];
 
+					 if(filters.length) {
 						 _.forEach(markers, function(m) {
 							 const isSelected = _.find(filters, function(f) { return m.icon.fillColor === f });
 							 if(!isSelected) {
 								 m.setVisible(false);
-							 } else {
-                 searchMarkersByFilters.push(m);
-               }
+							 }
 						 });
-					 } else {
-             searchMarkersByFilters = markers;
-           }
-
-           combineFilters(searchMarkersByFilters, searchMarkersByGmap);
+					 }
 				 }
 
 				 function resetFilters(markers) {
@@ -314,7 +182,6 @@
 					 })
 				 }
 
-         /* Menu */
 				 function toggleFilters(value) {
 					 const filter = _.find(filters, function(f) { return f === value });
 
@@ -324,81 +191,9 @@
 						 filters.push(value);
 					 }
 				 }
-
-         function toggleMenu() {
-           document.querySelector('.filters').classList.toggle('isClosed');
-           if(document.querySelector('.filters').classList.contains('isClosed')) {
-             map.panBy(155, 0);
-           } else {
-             map.panBy(-155, 0);
-           }
-         }
-
-         /* ================================= */
-         /* ======== Search Results ========= */
-         /* ================================= */
-         /* Gesture Behavior */
-         const resultsList = document.querySelector("#results");
-         const hammerResults = new Hammer(resultsList);
-
-         hammerResults.on('tap', function(e) {
-           const lat = e.target.getAttribute('data-lat');
-           const lng = e.target.getAttribute('data-lng');
-
-           map.setCenter(new google.maps.LatLng(lat,lng));
-           map.panBy(-150, 0);
-
-           const infoWindow = _.find(infoWindows, function(iw) {
-             return iw._marker.getPosition().lat() === parseFloat(lat) && iw._marker.getPosition().lng() === parseFloat(lng);
-           });
-
-           infoWindow.open();
-         });
-
-
-         /* ================================= */
-         /* =========== Functions =========== */
-         /* ================================= */
-         var combineFilters = function(searchMarkersByFilters, searchMarkersByGmap) {
-           /* reinit results */
-           var resultsWrapper = document.getElementById('results');
-           resultsWrapper.innerHTML = "";
-
-           var searchMarkers = _.intersection(searchMarkersByFilters, searchMarkersByGmap);
-           if(searchMarkersByFilters.length === 0 || searchMarkersByGmap.length === 0) {
-             searchMarkers = _.union(searchMarkersByFilters, searchMarkersByGmap);
-           }
-
-           var numberResults = document.querySelector('.results-number');
-           if(searchMarkers.length > 0) {
-             var labelNumberResults = searchMarkers.length > 1 ? " résultats" : " résultat";
-             numberResults.innerText = searchMarkers.length + labelNumberResults;
-           } else {
-             numberResults.innerText = "";
-           }
-
-           for (var searchMarker of searchMarkers) {
-             var result = document.createElement('div');
-             result.setAttribute("class", "result");
-
-             var label = document.createElement('p');
-             label.setAttribute("class", "result-label");
-             label.setAttribute("data-lat", searchMarker.getPosition().lat());
-             label.setAttribute("data-lng", searchMarker.getPosition().lng());
-             label.innerHTML = searchMarker.title;
-
-             var circle = document.createElement('span');
-             circle.setAttribute("class", "circle");
-             circle.setAttribute("style", "background-color: " + searchMarker.icon.fillColor);
-
-             result.appendChild(circle);
-             result.appendChild(label);
-             resultsWrapper.appendChild(result);
-           }
-         }
-		  </script>
+		      </script>
 
       <script src="gmap.js"></script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAMtBR72QCj0Uidl-x5PKnYim8jsDNqRE&amp;v=3.31&amp;language=fr&amp;libraries=geometry,places&amp;callback=createMap"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9t7r5MTrXgbikEksL3e6X0Yy5q2T-QxU&amp;v=3.31&amp;language=fr&amp;libraries=places,geometry&amp;callback=createMap"></script>
    </body>
 </html>
