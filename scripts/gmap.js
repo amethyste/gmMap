@@ -1,4 +1,3 @@
-
 			function createMap(){
 
 				//start: snazzy-info-window.min.js v1.1.1
@@ -34,126 +33,35 @@
 						mapTypeIds: mapTypeIds
 					};
 				};
-
+				map = new google.maps.Map(document.getElementById('map'), opts);
+map.panBy(-155, 0);
 
 				setControlOptions('fullscreen',false,'DEFAULT','',null);
-
+				map = new google.maps.Map(document.getElementById('map'), opts);
+map.panBy(-155, 0);
 
 				setControlOptions('mapType',false,'DEFAULT','DEFAULT',["roadmap","satellite","terrain"]);
-
+				map = new google.maps.Map(document.getElementById('map'), opts);
+map.panBy(-155, 0);
 
 				setControlOptions('rotate',false,'DEFAULT','',null);
-
+				map = new google.maps.Map(document.getElementById('map'), opts);
+map.panBy(-155, 0);
 
 				setControlOptions('scale',false,'','',null);
-
+				map = new google.maps.Map(document.getElementById('map'), opts);
+map.panBy(-155, 0);
 
 				setControlOptions('streetView',false,'DEFAULT','',null);
-
+				map = new google.maps.Map(document.getElementById('map'), opts);
+map.panBy(-155, 0);
 
 				setControlOptions('zoom',true,'DEFAULT','',null);
+				map = new google.maps.Map(document.getElementById('map'), opts);
+map.panBy(-155, 0);
 
-			var findMarkers = function(place, radius) {
-				var markersFound = [];
+				var map = new google.maps.Map(document.getElementById('map'), opts);
 
-				for (var marker of markers) {
-					var targetLat = marker.getPosition().lat();
-					var targetLng = marker.getPosition().lng();
-					var centerLat = place.geometry.location.lat();
-					var centerLng = place.geometry.location.lng();
-
-					var targetLoc = new google.maps.LatLng(targetLat,targetLng);
-					var centerLoc = new google.maps.LatLng(centerLat, centerLng);
-
-					var distanceInkm = (google.maps.geometry.spherical.computeDistanceBetween(centerLoc, targetLoc) / 1000).toFixed(2);
-
-					if(distanceInkm <= radius){
-						markersFound.push(marker);
-					}
-				}
-
-				return markersFound;
-			}
-
-			var fillResults = function(place) {
-				var bounds = new google.maps.LatLngBounds();
-				var radiusList = [25, 50, 100];
-				var i = 0;
-
-				do {
-					searchMarkersByGmap = findMarkers(place, radiusList[i]);
-					i++;
-				} while(searchMarkersByGmap.length === 0 && i < radiusList.length)
-
-				combineFilters(searchMarkersByFilters, searchMarkersByGmap);
-
-				if (place.geometry.viewport) {
-					// Only geocodes have viewport.
-					bounds.union(place.geometry.viewport);
-				} else {
-					bounds.extend(place.geometry.location);
-				}
-
-				map.fitBounds(bounds);
-				map.setZoom(11);
-				map.panBy(-150, 0);
-			}
-
-			 map = new google.maps.Map(document.getElementById('map'), opts);
-			 map.panBy(-155, 0);
-
-			 var inputSearchbar = document.querySelector('#searchbar input');
-			 var options = {
-			    types: ['(cities)'],
-			    componentRestrictions: {country: 'fr'}
-			 };
-
-			 var autocomplete = new google.maps.places.Autocomplete(inputSearchbar, options);
-			 autocomplete.bindTo('bounds', map);
-
-			 google.maps.event.addDomListener(inputSearchbar, 'keydown', function(event) {
-			 	 if (event.keyCode === 13) {
-					 event.preventDefault();
-				 }
-			 });
-
-			 google.maps.event.addDomListener(inputSearchbar, 'focus', function(event) {
-				 inputSearchbar.value = "";
-				 searchMarkersByGmap = [];
-				 combineFilters(searchMarkersByFilters, searchMarkersByGmap);
-			 });
-
-			 google.maps.event.addListener(autocomplete, 'place_changed', function(event) {
-          var place = autocomplete.getPlace();
-					searchMarkersByGmap = [];
-
-          if (!place.formatted_address) {
-						autocompleteService = new google.maps.places.AutocompleteService();
-						autocompleteService.getPlacePredictions(
-								{
-										'input': place.name,
-										'offset': place.name.length,
-										'componentRestrictions': {'country': 'fr'},
-										'types': ['(cities)']
-								},
-								function listentoresult(list, status) {
-									var firstResult = list[0];
-									inputSearchbar.value = firstResult.description;
-
-									var request = {
-									  placeId: firstResult.place_id,
-									  fields: ['geometry']
-									};
-
-									var service = new google.maps.places.PlacesService(map);
-									service.getDetails(request, function(place, status){
-										fillResults(place);
-									});
-								});
-          } else {
-						fillResults(place);
-					}
-        });
 
 				(function(){
 					var markerOptions = {
@@ -176,13 +84,15 @@
 
 					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
+
+
 					var infoWindow = new SnazzyInfoWindow({
 						marker: marker,
 						wrapperClass: 'ql-snow',
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#333',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-ouverte-gnv-3.jpg/6ca767f7-7d6e-06ba-243e-7e503141929e?version=1.0\u0026amp;t=1538559935653\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eNANTES EST\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRUE DE BELE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e44000 NANTES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cspan data-font-index=\"4\" style=\"font-family: \u0026quot;Open Sans\u0026quot;, sans-serif;\"\u003e_________________________\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-ouverte-gnv-3.jpg/6ca767f7-7d6e-06ba-243e-7e503141929e?version=1.0\u0026amp;t=1538559935653\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eNANTES EST\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRUE DE BELE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e44000 NANTES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cspan style=\"font-family: \u0026quot;Open Sans\u0026quot;, sans-serif;\" data-font-index=\"4\"\u003e_________________________\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -196,7 +106,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -222,6 +132,8 @@
 
 					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
 
+
+
 					var infoWindow = new SnazzyInfoWindow({
 						marker: marker,
 						wrapperClass: 'ql-snow',
@@ -242,7 +154,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -276,7 +188,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003ch3\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-ouverte-gnv-3.jpg/6ca767f7-7d6e-06ba-243e-7e503141929e?version=1.0\u0026amp;t=1538559935653\u0026amp;imagePreview=1\"\u003e\u003c/h3\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eSAINT QUENTIN FALLAVIER\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRUE DE PROVENCEZAC CHESNE LA NOIRET\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e38290 SAINT QUENTIN FALLAVIER\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong\u003e_________________________________\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cstrong\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/strong\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003ch3\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-ouverte-gnv-3.jpg/6ca767f7-7d6e-06ba-243e-7e503141929e?version=1.0\u0026amp;t=1538559935653\u0026amp;imagePreview=1\"\u003e\u003c/h3\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eSAINT QUENTIN FALLAVIER CHESNES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRUE DE PROVENCE ZAC CHESNES LA NOIREE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e38290 SAINT QUENTIN FALLAVIER\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong\u003e_________________________________\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cstrong\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/strong\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -290,7 +202,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -310,11 +222,13 @@
 						scale: 1.1363636363636363636363636364,
 						anchor: new google.maps.Point(11, 22),
 						fillOpacity: 1,
-						fillColor: '#496ac9',
+						fillColor: '#db5810',
 						strokeOpacity: 0
 					};
 
 					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
 
 					var infoWindow = new SnazzyInfoWindow({
 						marker: marker,
@@ -322,7 +236,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003eT3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eMONT DE MARSAN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eROUTE DE ST SEVER \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZA DE PELLAGAS\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e40280 SAINT PIERRE DU MONT\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/span\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eQ3 2019\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eMONT DE MARSAN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eROUTE DE ST SEVER \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZA DE PELLAGAS\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e40280 SAINT PIERRE DU MONT\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -336,7 +250,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -384,7 +298,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -432,7 +346,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -480,7 +394,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -514,7 +428,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003emars 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eNANTES MIN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eMARCHE INTERNATIONAL 58 BD GUSTAVE ROCH\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e44000 NANTES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e______________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir/127657f1-cd6a-49c6-3fad-ff5b5ae02904?version=1.0\u0026amp;t=1553180433966\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003e01/04/19\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eNANTES MIN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eMARCHE INTERNATIONAL 58 BD GUSTAVE ROCH\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e44000 NANTES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e______________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -528,7 +442,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -562,7 +476,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003emars 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eBORDEAUX CARBON BLANC\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRUE DES FRERES LUMIERES\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e33560 CARBON BLANC\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cspan style=\"font-size: 12px;\"\u003e___\u003c/span\u003e___________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003e01/04/19\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eBORDEAUX CARBON BLANC\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRUE DES FRERES LUMIERES\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e33560 CARBON BLANC\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cspan style=\"font-size: 12px;\"\u003e___\u003c/span\u003e___________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -576,7 +490,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -610,7 +524,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003e: avril 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eBOURGES BEAULIEU\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRUE LOUIS BÉCHEREAU\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e18000 BOURGES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e______________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003e01/05/19\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eBOURGES BEAULIEU\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRUE LOUIS BÉCHEREAU\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e18000 BOURGES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e______________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -624,7 +538,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -658,7 +572,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003emai 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRENNES CHANTEPIE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eCENTRE ROUTIER ZI DE CHANTEPIE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e35135 CHANTEPIE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e______________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003eQ3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRENNES CHANTEPIE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eCENTRE ROUTIER ZI DE CHANTEPIE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e35135 CHANTEPIE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e______________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -672,7 +586,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -681,8 +595,8 @@
 					var markerOptions = {
 						map: map,
 						position: {
-							lat: 48.75034216,
-							lng: 2.389211923,
+							lat: 48.749358,
+							lng: 2.349936,
 						},
 						title: "Relais Rungis Halles"
 					};
@@ -720,7 +634,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -768,7 +682,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -816,7 +730,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -850,7 +764,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003eT3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS MONTFAVET LA DURANCE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e(NF067002)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e4316 RTE DE MARSEILLE \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e94140 MONTFAVET\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003eQ3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS MONTFAVET LA DURANCE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e(NF067002)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e4316 RTE DE MARSEILLE \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e94140 MONTFAVET\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -864,7 +778,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -898,7 +812,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eT3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eAMIENS EST\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePARKING LA JANGADA\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e80440 GLISY\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e17/06/19\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS D\u0027AMIENS EST\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePARKING LA JANGADA\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e80440 GLISY\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -912,7 +826,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -921,8 +835,8 @@
 					var markerOptions = {
 						map: map,
 						position: {
-							lat: 48.623777,
-							lng: 2.368935,
+							lat: 49.487560473,
+							lng: 0.14961586421,
 						},
 						title: "Relais de Fleury"
 					};
@@ -946,7 +860,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eT4 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE FLEURY\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF078219)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eAIRE DE FLEURY /\u0026nbsp;Z.A. DES CIROL \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e91700 FLEURY MEROGIS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eQ4 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS AMIRAL MOUCHEZ\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF078219)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e174 BOULEVARD DE L\u0027AMIRAL\u0026nbsp;MOUCHEZ\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e76600 LE HAVRE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -960,55 +874,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
-
-				})();
-
-
-				(function(){
-					var markerOptions = {
-						map: map,
-						position: {
-							lat: 49.487560473,
-							lng: 0.14961586421,
-						},
-						title: "Relais Amiral Mouchez"
-					};
-
-					markerOptions.icon = {
-						path: 'M11 2c-3.9 0-7 3.1-7 7 0 5.3 7 13 7 13 0 0 7-7.7 7-13 0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5 0-1.4 1.1-2.5 2.5-2.5 1.4 0 2.5 1.1 2.5 2.5 0 1.4-1.1 2.5-2.5 2.5Z',
-						scale: 1.1363636363636363636363636364,
-						anchor: new google.maps.Point(11, 22),
-						fillOpacity: 1,
-						fillColor: '#db5810',
-						strokeOpacity: 0
-					};
-
-					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
-
-
-
-					var infoWindow = new SnazzyInfoWindow({
-						marker: marker,
-						wrapperClass: 'ql-snow',
-						placement: 'left',
-						backgroundColor: '#fff',
-						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eT4 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS AMIRAL MOUCHEZ\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF078219)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e174 BOULEVARD DE L\u0027AMIRAL\u0026nbsp;MOUCHEZ\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e76600 LE HAVRE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
-						maxWidth: undefined,
-						maxHeight: undefined,
-						padding: "30px",
-						borderRadius: "3px 3px",
-						offset: {
-							top: "-13px",
-							left: "-13px",
-							},
-						border: {"width":"1px","color":"#bbb"},
-						pointer: "15px",
-						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
-						closeOnMapClick: true,
-						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1042,7 +908,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eT3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE LA MAULDRE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eROUTE DE GARGENVILLE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e78680 EPONE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eQ4 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE LA MAULDRE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eROUTE DE GARGENVILLE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e78680 EPONE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1056,7 +922,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1090,7 +956,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eT3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE MAZERAN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eROND POINT EDGAR FAURE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e34500 BEZIERS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eS1 2020\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE BÉZIERS ROCADE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eROND POINT EDGAR FAURE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e34500 BEZIERS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1104,7 +970,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1124,7 +990,7 @@
 						scale: 1.1363636363636363636363636364,
 						anchor: new google.maps.Point(11, 22),
 						fillOpacity: 1,
-						fillColor: '#db5810',
+						fillColor: '#496ac9',
 						strokeOpacity: 0
 					};
 
@@ -1138,7 +1004,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DES MILLES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eZI LES MILLES R. CH. LEDOUX \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e13100 AIX-EN-PROVENCE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DES MILLES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eZI LES MILLES R. CH. LEDOUX \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e13100 AIX-EN-PROVENCE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1152,7 +1018,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1172,11 +1038,13 @@
 						scale: 1.1363636363636363636363636364,
 						anchor: new google.maps.Point(11, 22),
 						fillOpacity: 1,
-						fillColor: '#db5810',
+						fillColor: '#496ac9',
 						strokeOpacity: 0
 					};
 
 					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
 
 					var infoWindow = new SnazzyInfoWindow({
 						marker: marker,
@@ -1184,7 +1052,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DU ROUILLAT\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF059750)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e2 RUE ALBERT THOMAS RN 51 \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e51100 REIMS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DU ROUILLAT\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF059750)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e2 RUE ALBERT THOMAS RN 51 \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e51100 REIMS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1198,7 +1066,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1232,7 +1100,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eT2 2020\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003ePORT DE GENNEVILLIERS SIGEIF\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF080221)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e92230 GENNEVILLIERS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eS1 2020\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003ePORT DE GENNEVILLIERS SIGEIF\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF080221)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e92230 GENNEVILLIERS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1246,7 +1114,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1255,10 +1123,9 @@
 					var markerOptions = {
 						map: map,
 						position: {
-							lat: 48.764688,
-							lng: 2.356465,
-						},
-						title: "Relais de Rungis (MIN Rungis)"
+							lat: 48.749358,
+							lng: 2.349936,
+						}
 					};
 
 					markerOptions.icon = {
@@ -1280,7 +1147,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e\u003cem\u003e2020\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE RUNGIS (MIN RUNGIS)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF059070)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eBLD CIRCULAIRE NORD - FRUILEG 10\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e94594 RUNGIS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e\u003cem\u003e2020\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE RUNGIS (MIN RUNGIS)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF059070)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eBLD CIRCULAIRE NORD - FRUILEG 10\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e94594 RUNGIS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1294,7 +1161,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1328,7 +1195,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#848080',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px;\"\u003e\u003cem\u003eT4 2018\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE PONTAULT COMBAULT EST\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF072438)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eAIRE DE BERCHERES\u0026nbsp;CD 51 \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e77340 PONTAULT COMBAULT\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE PONTAULT COMBAULT EST\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF072438)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eAIRE DE BERCHERES\u0026nbsp;CD 51 \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e77340 PONTAULT COMBAULT\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1342,7 +1209,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1362,7 +1229,7 @@
 						scale: 1.1363636363636363636363636364,
 						anchor: new google.maps.Point(11, 22),
 						fillOpacity: 1,
-						fillColor: '#496ac9',
+						fillColor: '#db5810',
 						strokeOpacity: 0
 					};
 
@@ -1376,7 +1243,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#848080',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px;\"\u003e\u003cem\u003eT3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS CHAMP DU ROY\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRUE VOLTAIRE \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eANCIEN CHEMIN DE LIESSE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e02000 LAON\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px;\"\u003e\u003cem\u003eQ4\u003c/em\u003e\u003c/strong\u003e\u003cem style=\"font-size: 11px;\"\u003e \u003c/em\u003e\u003cstrong style=\"font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS CHAMP DU ROY\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRUE VOLTAIRE \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eANCIEN CHEMIN DE LIESSE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e02000 LAON\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1390,7 +1257,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1424,7 +1291,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#848080',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong\u003eRELAIS DE PORT MAZEROLLE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px;\"\u003e(NF037072)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px;\"\u003e10 RUE DES ALLIES \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px;\"\u003e57000 METZ\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong\u003eRELAIS DE PORT MAZEROLLE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px;\"\u003e(NF037072)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px;\"\u003e10 RUE DES ALLIES \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px;\"\u003e57000 METZ\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1438,7 +1305,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1472,7 +1339,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#848080',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE SAINT PRIEST MI-PLAINE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF003097)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRN6 - ROUTE DE GRENOBLE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e69800 SAINT PRIEST\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE SAINT PRIEST MI-PLAINE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF003097)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRN6 - ROUTE DE GRENOBLE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e69800 SAINT PRIEST\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1486,7 +1353,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1520,7 +1387,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#848080',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DES BALMES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF066228)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 75 CRUE DE MOIRANS \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e38340 VOREPPE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DES BALMES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF066228)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 75 CRUE DE MOIRANS \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e38340 VOREPPE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1534,7 +1401,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1568,7 +1435,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#848080',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DES BEAUMONTS\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(\u003c/span\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eNF033299)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eAV\u0026nbsp;FRANCOIS ARAGO \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e28000 CHARTRES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DES BEAUMONTS\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(\u003c/span\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eNF033299)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eAV\u0026nbsp;FRANCOIS ARAGO \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e28000 CHARTRES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong style=\"color: rgb(0, 0, 0);\"\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1582,7 +1449,54 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
+
+				})();
+
+
+				(function(){
+					var markerOptions = {
+						map: map,
+						position: {
+							lat: 49.04313,
+							lng: 2.105287,
+						}
+					};
+
+					markerOptions.icon = {
+						path: 'M11 2c-3.9 0-7 3.1-7 7 0 5.3 7 13 7 13 0 0 7-7.7 7-13 0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5 0-1.4 1.1-2.5 2.5-2.5 1.4 0 2.5 1.1 2.5 2.5 0 1.4-1.1 2.5-2.5 2.5Z',
+						scale: 1.1363636363636363636363636364,
+						anchor: new google.maps.Point(11, 22),
+						fillOpacity: 1,
+						fillColor: '#496ac9',
+						strokeOpacity: 0
+					};
+
+					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
+
+					var infoWindow = new SnazzyInfoWindow({
+						marker: marker,
+						wrapperClass: 'ql-snow',
+						placement: 'left',
+						backgroundColor: '#fff',
+						fontColor: '#000',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DES OZIERS\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003e(NF059979)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003eRN 184 - ZI VERT GALANT \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e95310 SAINT OUEN L\u0027AUMONE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e</div>',
+						maxWidth: undefined,
+						maxHeight: undefined,
+						padding: "30px",
+						borderRadius: "3px 3px",
+						offset: {
+							top: "-13px",
+							left: "-13px",
+							},
+						border: {"width":"1px","color":"#bbb"},
+						pointer: "15px",
+						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
+						closeOnMapClick: true,
+						closeWhenOthersOpen: true,
+					});
 
 				})();
 
@@ -1616,7 +1530,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eVARENNES VAUZELLES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZONE DE VARENNES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e58640 VARENNES VAUZELLES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eVARENNES VAUZELLES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZONE DE VARENNES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e58640 VARENNES VAUZELLES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1630,7 +1544,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1664,7 +1578,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS ESPACE ST GERMAIN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF078235)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 31 - ROUTE DE CLERMONT \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e6000 BEAUVAIS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS ESPACE ST GERMAIN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF078235)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 31 - ROUTE DE CLERMONT \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e6000 BEAUVAIS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1678,7 +1592,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1712,7 +1626,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS HAUT L\u0027EVEQUE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF059952) \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e195 AV\u0026nbsp;DU HAUT LEVEQUE \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e33600 PESSAC\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS HAUT L\u0027EVEQUE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF059952) \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e195 AV\u0026nbsp;DU HAUT L\u0027EVEQUE \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e33600 PESSAC\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1726,7 +1640,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1760,7 +1674,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS ST GERMAIN ARPAJON \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF062014) \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e25 ROUTE\u0026nbsp;D\u0027ORLEANS\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e91290 SAINT GERMAIN LES ARPAJON\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS ST GERMAIN ARPAJON \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF062014) \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e25 ROUTE\u0026nbsp;D\u0027ORLEANS\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e91290 SAINT GERMAIN LES ARPAJON\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1774,7 +1688,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1808,7 +1722,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS ST HUBERT \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF027098)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e91 RTE DE GRENOBLE\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e69800 ST PRIEST\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.1\u0026amp;t=1553165530680\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS ST HUBERT \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF027098)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e91 RTE DE GRENOBLE\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e69800 ST PRIEST\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1822,7 +1736,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1856,7 +1770,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eTOURS NORD\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZA LA COUDRIERE\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e37210  PARCAY MESLAY\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eTOURS NORD\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZA LA COUDRIERE\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e37210  PARCAY MESLAY\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1870,7 +1784,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1890,7 +1804,7 @@
 						scale: 1.1363636363636363636363636364,
 						anchor: new google.maps.Point(11, 22),
 						fillOpacity: 1,
-						fillColor: '#496ac9',
+						fillColor: '#db5810',
 						strokeOpacity: 0
 					};
 
@@ -1904,7 +1818,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003eT3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eVILLEFRANCHE SUR SAONE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eAVENUE DE L\u0027EUROPEZI NORD EST \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e69400 VILLEFRANCHE SUR SAONE\u003c/span\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003eQ4 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eVILLEFRANCHE SUR SAONE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eAVENUE DE L\u0027EUROPEZI NORD EST \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e69400 VILLEFRANCHE SUR SAONE\u003c/span\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1918,7 +1832,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -1952,7 +1866,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003e2020\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS CHENOVE EST \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF070648)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e169 AVENUE ROLAND CARRAZ \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e21300\u0026nbsp;CHENOVE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS CHENOVE EST \u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF070648)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e169 AVENUE ROLAND CARRAZ \u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e21300\u0026nbsp;CHENOVE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -1966,7 +1880,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2000,7 +1914,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eALENÇON / PAYS DE SEES\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePARC D\u0027ACTIVITÉS DU PAYS DE SÉES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eINTERSECTION A28/A88 - SORTIE 16\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e61500 SEES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e \u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eALENÇON / PAYS DE SEES\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePARC D\u0027ACTIVITÉS DU PAYS DE SÉES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eINTERSECTION A28/A88 - SORTIE 16\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e61500 SEES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e \u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2014,7 +1928,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2048,7 +1962,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eAUXERRE\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN6\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e89380 APPOIGNY\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u003c/span\u003e \u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eAUXERRE\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN6\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e89380 APPOIGNY\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u003c/span\u003e \u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2062,7 +1976,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2096,7 +2010,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eCHALONS EN CHAMPAGNE\u0026nbsp;\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eCENTRE ROUTIER - Z.A.M. LA VEUVE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e51000 CHALONS EN CHAMPAGNE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eCHALONS EN CHAMPAGNE\u0026nbsp;\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eCENTRE ROUTIER - Z.A.M. LA VEUVE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e51000 CHALONS EN CHAMPAGNE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2110,7 +2024,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2144,7 +2058,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eCHARLEVILLE MÉZIÈRES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZI MOULIN LEBLANC\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e8200 CHARLEVILLE MÉZIÈRES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eCHARLEVILLE MÉZIÈRES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZI MOULIN LEBLANC\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e8200 CHARLEVILLE MÉZIÈRES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2158,7 +2072,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2192,7 +2106,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eDREUX VERNOUILLET\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e8, RUE GUSTAVE EIFFEL\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e28500\u0026nbsp;\u0026nbsp; VERNOUILLET\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eDREUX VERNOUILLET\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e8, RUE GUSTAVE EIFFEL\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e28500\u0026nbsp;\u0026nbsp; VERNOUILLET\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2206,7 +2120,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2240,7 +2154,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eEPINAL CHAVELOT\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRUE DE LA COBRELLE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e88150 CHAVELOT \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eEPINAL CHAVELOT\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRUE DE LA COBRELLE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e88150 CHAVELOT \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2254,7 +2168,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2288,7 +2202,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eESTERNAY NORD\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 4 - LA MALADRERIE - DIRECTION PARIS\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e51310\u0026nbsp;ESTERNAY\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eESTERNAY NORD\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 4 - LA MALADRERIE - DIRECTION PARIS\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e51310\u0026nbsp;ESTERNAY\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2302,7 +2216,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2336,7 +2250,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eFOUGÈRES/ST-SAUVEUR-DES-LANDES\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eROUTE DES ESTUAIRES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePARC D\u0027ACTIVITÉS PLAISANCE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e35133SAINT SAUVEUR DES LANDES\u0026nbsp;\u003c/span\u003e\u003cspan style=\"font-size: 12px;\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eFOUGÈRES/ST-SAUVEUR-DES-LANDES\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eROUTE DES ESTUAIRES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePARC D\u0027ACTIVITÉS PLAISANCE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e35133SAINT SAUVEUR DES LANDES\u0026nbsp;\u003c/span\u003e\u003cspan style=\"font-size: 12px;\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2350,7 +2264,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2384,7 +2298,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eLA CROISIÈRE\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePARC D’ACTIVITÉ DE LA CROISIÈRE\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e23300 SAINT MAURICE LA SOUTERRAINE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eLA CROISIÈRE\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePARC D’ACTIVITÉ DE LA CROISIÈRE\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e23300 SAINT MAURICE LA SOUTERRAINE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2398,7 +2312,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2432,7 +2346,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eLANGON\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eLIEU-DIT BAILLAN\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e33210 LANGON\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eLANGON\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eLIEU-DIT BAILLAN\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e33210 LANGON\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2446,7 +2360,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2480,7 +2394,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eLANGRES SUD\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZA DE LANGRES SUD\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eSORTIE 6 - PERROGNEY-LES-FONTAINES\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e52160 PERROGNEY LES FONTAINES\u0026nbsp;\u003c/span\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u003c/span\u003e \u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eLANGRES SUD\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eZA DE LANGRES SUD\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eSORTIE 6 - PERROGNEY-LES-FONTAINES\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e52160 PERROGNEY LES FONTAINES\u0026nbsp;\u003c/span\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u003c/span\u003e \u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2494,7 +2408,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2528,7 +2442,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eLIMALONGES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eN10 - CARREFOUR DES MAISONS BLANCHES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e79190 LIMALONGES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eLIMALONGES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eN10 - CARREFOUR DES MAISONS BLANCHES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e79190 LIMALONGES\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2542,7 +2456,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2576,7 +2490,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eNIORT LA CRÈCHE\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eÉCHANGEUR 22 - CENTRE ROUTIER\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e79260 NIORT - LA CRÈCHE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eNIORT LA CRÈCHE\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eÉCHANGEUR 22 - CENTRE ROUTIER\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e79260 NIORT - LA CRÈCHE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2590,7 +2504,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2624,7 +2538,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS PORTE DU TARN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(PROJET)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e81370\u0026nbsp;ST SULPICE LA POINTE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS PORTE DU TARN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(PROJET)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e81370\u0026nbsp;ST SULPICE LA POINTE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2638,7 +2552,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2672,7 +2586,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003ePAGNY SUR MEUSE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRD36 - ZI LES HERBUES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e55190 PAGNY SUR MEUSE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003ePAGNY SUR MEUSE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRD36 - ZI LES HERBUES\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e55190 PAGNY SUR MEUSE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2686,7 +2600,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2720,7 +2634,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS ALLONNES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF000577)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e2 AVENUE DU GENERAL DE GAULLE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e72700 ALLONNES \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS ALLONNES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF000577)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e2 AVENUE DU GENERAL DE GAULLE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e72700 ALLONNES \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2734,7 +2648,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2768,7 +2682,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS AYGUE LONGUE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF078170)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 134\u0026nbsp;ZA DE MONTARDON\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e64121 MONTARDON\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS AYGUE LONGUE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF078170)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 134\u0026nbsp;ZA DE MONTARDON\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e64121 MONTARDON\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2782,7 +2696,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2816,7 +2730,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS BARINCOU\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF059700)\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e305-309 BD DE LA PAIX\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e64000 PAU\u0026nbsp;\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________ \u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS BARINCOU\u0026nbsp;\u0026nbsp;\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF059700)\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e305-309 BD DE LA PAIX\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e64000 PAU\u0026nbsp;\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________ \u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2830,7 +2744,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2864,7 +2778,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE LA CRAU\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF070678)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 113 - ZAC DE LA CRAU\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e13300\u0026nbsp;SALON DE PROVENCE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE LA CRAU\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF070678)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRN 113 - ZAC DE LA CRAU\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e13300\u0026nbsp;SALON DE PROVENCE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2878,7 +2792,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2912,7 +2826,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE RIVESALTES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF080162)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e6 AVENUE LOUIS BLANC\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e66000 RIVESALTES\u0026nbsp;\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE RIVESALTES\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF080162)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e6 AVENUE LOUIS BLANC\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e66000 RIVESALTES\u0026nbsp;\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2926,7 +2840,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -2960,7 +2874,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE VIGNEUX\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF079342)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRN 165 - AIRE DE VIGNEUX DE BRETAGNE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e44360 VIGNEUX DE BRETAGNE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS DE VIGNEUX\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e(NF079342)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003eRN 165 - AIRE DE VIGNEUX DE BRETAGNE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size: 12px; color: rgb(136, 136, 136);\"\u003e44360 VIGNEUX DE BRETAGNE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -2974,7 +2888,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3008,7 +2922,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS LA SENTINELLE OUEST\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF064701)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eA2 - AIRE DE LA SENTINELLE OUEST\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e59174 LA SENTINELLE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS LA SENTINELLE OUEST\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF064701)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eA2 - AIRE DE LA SENTINELLE OUEST\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e59174 LA SENTINELLE\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -3022,7 +2936,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3056,7 +2970,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS PORTE DE ST OUEN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF080149)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e17-23 AVENUE DE LA PORTE DE ST OUEN\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e75017 PARIS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eRELAIS PORTE DE ST OUEN\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF080149)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e17-23 AVENUE DE LA PORTE DE ST OUEN\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e75017 PARIS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -3070,7 +2984,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3104,7 +3018,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eSARL SBH\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF077385)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eLIEUDIT ST-CHARLES CD6 RTE TRETS\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e13710 FUVEAU\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eSARL SBH\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e(NF077385)\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eLIEUDIT ST-CHARLES CD6 RTE TRETS\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e13710 FUVEAU\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -3118,7 +3032,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3152,7 +3066,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Future+station+GNC+Total+et+AS+24/ae76718b-e0a0-eedf-8e67-1281cd6a9393?version=1.0\u0026amp;t=1539164978484\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eVELAINE EN HAYE\u0026nbsp;\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRUE DES BUIS - PARC DU HAYE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e54840 VELAINE EN HAYE\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003cspan style=\"font-size: 12px;\"\u003e\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eVELAINE EN HAYE\u0026nbsp;\u003c/strong\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003eRUE DES BUIS - PARC DU HAYE\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e54840 VELAINE EN HAYE\u0026nbsp;\u0026nbsp;\u0026nbsp;\u003c/span\u003e\u003cspan style=\"font-size: 12px;\"\u003e\u0026nbsp; \u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -3166,7 +3080,7 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
 
 				})();
 
@@ -3175,8 +3089,8 @@
 					var markerOptions = {
 						map: map,
 						position: {
-							lat: 48.9836,
-							lng: 1.742,
+							lat: 48.992181,
+							lng: 1.735384,
 						},
 						title: "Port de Limay"
 					};
@@ -3200,7 +3114,7 @@
 						placement: 'left',
 						backgroundColor: '#fff',
 						fontColor: '#000',
-						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/travaux-programmes-gnv-3.jpg/ef2d8662-d060-583f-6317-9c7646d87551?version=1.0\u0026amp;t=1538497899247\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"color: rgb(136, 136, 136); font-size: 11px;\"\u003e\u003cem\u003eT2 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003ePORT DE LIMAY\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003ePORT DE LIMAY PORCHEVILLE RD 146\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136); font-size: 12px;\"\u003e78520 LIMAY\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e</div>',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/Station+%C3%A0+venir.jpg/7a956263-015b-cf9e-9d8c-4ed9f8968883?version=1.0\u0026amp;t=1555668121310\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cem style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003eOuverture prévisionnelle : \u003c/em\u003e\u003cstrong style=\"font-size: 11px; color: rgb(136, 136, 136);\"\u003e\u003cem\u003eQ3 2019\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong\u003ePORT DE LIMAY\u003c/strong\u003e\u003c/p\u003e\u003cp\u003ePORT DE LIMAY PORCHEVILLE RD 146\u003c/p\u003e\u003cp\u003e78520 LIMAY\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e______________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eAccédez au GNC en station \u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003esans engagement de volume\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/gnv-total-cta-2/a9ce4854-6fe0-2a4d-284c-8c6c50cd0a6f?version=1.0\u0026amp;t=1537889099100\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e</div>',
 						maxWidth: undefined,
 						maxHeight: undefined,
 						padding: "30px",
@@ -3214,7 +3128,103 @@
 						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
 						closeOnMapClick: true,
 						closeWhenOthersOpen: true,
-					}); infoWindows.push(infoWindow);
+					});
+
+				})();
+
+
+				(function(){
+					var markerOptions = {
+						map: map,
+						position: {
+							lat: 48.443854,
+							lng: 1.489012,
+						},
+						title: "Relais de la Rocade"
+					};
+
+					markerOptions.icon = {
+						path: 'M11 2c-3.9 0-7 3.1-7 7 0 5.3 7 13 7 13 0 0 7-7.7 7-13 0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5 0-1.4 1.1-2.5 2.5-2.5 1.4 0 2.5 1.1 2.5 2.5 0 1.4-1.1 2.5-2.5 2.5Z',
+						scale: 1.1363636363636363636363636364,
+						anchor: new google.maps.Point(11, 22),
+						fillOpacity: 1,
+						fillColor: '#496ac9',
+						strokeOpacity: 0
+					};
+
+					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
+
+					var infoWindow = new SnazzyInfoWindow({
+						marker: marker,
+						wrapperClass: 'ql-snow',
+						placement: 'left',
+						backgroundColor: '#fff',
+						fontColor: '#000',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-total-marqueur.jpg/23cf143c-fff6-6663-9f21-7341ffd174dc?version=1.0\u0026amp;t=1538497003886\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong\u003eRELAIS DE LA ROCADE\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong\u003e(NF039295) \u003c/strong\u003e\u003c/p\u003e\u003cp\u003eAVENUE FRANÇOIS ARAGO\u003c/p\u003e\u003cp\u003e28000 CHARTRES\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e</div>',
+						maxWidth: undefined,
+						maxHeight: undefined,
+						padding: "30px",
+						borderRadius: "3px 3px",
+						offset: {
+							top: "-13px",
+							left: "-13px",
+							},
+						border: {"width":"1px","color":"#bbb"},
+						pointer: "15px",
+						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
+						closeOnMapClick: true,
+						closeWhenOthersOpen: true,
+					});
+
+				})();
+
+
+				(function(){
+					var markerOptions = {
+						map: map,
+						position: {
+							lat: 50.948544,
+							lng: 1.94779,
+						},
+						title: "Calais Transmark"
+					};
+
+					markerOptions.icon = {
+						path: 'M11 2c-3.9 0-7 3.1-7 7 0 5.3 7 13 7 13 0 0 7-7.7 7-13 0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5 0-1.4 1.1-2.5 2.5-2.5 1.4 0 2.5 1.1 2.5 2.5 0 1.4-1.1 2.5-2.5 2.5Z',
+						scale: 1.1363636363636363636363636364,
+						anchor: new google.maps.Point(11, 22),
+						fillOpacity: 1,
+						fillColor: '#496ac9',
+						strokeOpacity: 0
+					};
+
+					var marker = new google.maps.Marker(markerOptions); markers.push(marker);
+
+
+
+					var infoWindow = new SnazzyInfoWindow({
+						marker: marker,
+						wrapperClass: 'ql-snow',
+						placement: 'top',
+						backgroundColor: '#fff',
+						fontColor: '#000',
+						content: '<div class="ql-editor" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station+%C3%A9quipable.jpg/63a87f9f-7801-f257-06f7-957a68e4f8e7?version=1.0\u0026amp;t=1556030022793\u0026amp;imagePreview=1\" alt=\"Prévisualisation\"\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/station-as24-marqueur.jpg/e08b390b-7490-fb86-239b-31f0520bb909?version=1.0\u0026amp;t=1538654772937\u0026amp;imagePreview=1\"\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong style=\"color: rgb(136, 136, 136);\"\u003eCALAIS TRANSMARK\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003eZAC DES PINS\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"color: rgb(136, 136, 136);\"\u003e62730 MARCK EN CALAISIS\u003c/span\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e_____________________________\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eLe développement du réseau\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003ese fait en fonction de vos besoins...\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cstrong\u003e\u003cem\u003eDétaillez-nous vos attentes !\u003c/em\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003cbr\u003e\u003c/p\u003e\u003cp class=\"ql-align-center\"\u003e\u003ca href=\"https://gnv-mobilite.total.com/web/gnv-fr/contact\" target=\"_blank\"\u003e\u003cimg src=\"https://gnv-mobilite.total.com/documents/11731434/0/je+veux+du+GNC+-+gaz+naturel+comprim%C3%A9+-+TOTAL+et+AS+24/3e8d9847-7cca-d1e4-4b47-750bfbc1c04a?version=1.0\u0026amp;t=1539165199141\u0026amp;imagePreview=1\"\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003e\u003cbr\u003e\u003c/p\u003e</div>',
+						maxWidth: undefined,
+						maxHeight: undefined,
+						padding: "30px",
+						borderRadius: "3px 3px",
+						offset: {
+							top: "-26px",
+							left: "0px",
+							},
+						border: {"width":"1px","color":"#bbb"},
+						pointer: "15px",
+						shadow: {"h":"0px","v":"1px","blur":"3px","spread":"0px","opacity":0.3,"color":"#000000"},
+						closeOnMapClick: true,
+						closeWhenOthersOpen: true,
+					});
 
 				})();
 
